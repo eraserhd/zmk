@@ -9,6 +9,15 @@
       in {
         packages.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
+            cmake
+            bzip2
+            ccache
+            dtc
+            dfu-util
+            libtool
+            ninja
+            xz
+            python3Packages.west
           ];
         };
       });
