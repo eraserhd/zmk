@@ -17,6 +17,7 @@
             dfu-util
             libtool
             ninja
+            gperf
             xz
             (python3.withPackages (p: with p; [
               pyelftools
