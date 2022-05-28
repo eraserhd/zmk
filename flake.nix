@@ -9,6 +9,7 @@
       in {
         packages.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
+            gcc-arm-embedded
             cmake
             bzip2
             ccache
@@ -17,7 +18,19 @@
             libtool
             ninja
             xz
-            python3Packages.west
+            (python3.withPackages (p: with p; [
+              pyelftools
+              pyyaml
+              pykwalify
+              canopen
+              packaging
+              progress
+              psutil
+              #pylink-square
+              intelhex
+              west
+            ]))
+            qemu
           ];
         };
       });
