@@ -33,6 +33,11 @@
             ]))
             qemu
           ];
+          shellHook = ''
+            export ZEPHYR_TOOLCHAIN_VARIANT=gnuarmemb
+            export GNUARMEMB_TOOLCHAIN_PATH=${pkgs.gcc-arm-embedded}
+            source ./zephyr/zephyr-env.sh
+          '';
         };
       });
 }
