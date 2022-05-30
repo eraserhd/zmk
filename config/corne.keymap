@@ -1,0 +1,70 @@
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+
+#define DEFAULT 0
+#define SYMBOL  1
+#define MOUSE   2
+#define NUMBER  3
+
+&mt {
+        flavor = "balanced";
+};
+
+/ {
+
+#define CAP_Symb  &lt SYMBOL CAPS
+#define _D_Numb_  &lt NUMBER D
+#define _Z_LCtl_  &mt LCTL Z
+#define _X_LAlt_  &mt LALT X
+#define _Tab_Cmd  &mt LGUI TAB
+#define _Qu_Symb  &lt SYMBOL SINGLE_QUOTE
+#define Dot_RAlt  &mt RALT DOT
+#define Slsh_Ctl  &mt RCTL SLASH
+#define Bspc_Cmd  &mt RGUI BACKSPACE
+#define _Q_Mouse  &lt MOUSE Q
+
+        keymap {
+                compatible = "zmk,keymap";
+                default_layer {
+                        bindings = <
+/* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- --------- --------- */
+   &kp MINUS _Q_Mouse  &kp W     &kp E     &kp R     &kp T       &kp Y     &kp U     &kp I     &kp O     &kp P     &kp BSLH
+   CAP_Symb  &kp A     &kp S     _D_Numb_  &kp F     &kp G       &kp H     &kp J     &kp K     &kp L     &kp SEMI  _Qu_Symb
+   &kp LSHFT _Z_LCtl_  _X_LAlt_  &kp C     &kp V     &kp B       &kp N     &kp M     &kp COMMA Dot_RAlt  Slsh_Ctl  &kp RSHFT
+/*                               --------- --------- --------- | --------- --------- ---------                               */
+                                 &trans    &kp ENTER _Tab_Cmd    Bspc_Cmd  &kp SPACE &kp ESC
+                        >;
+                };
+                symbol_layer {
+                        bindings = <
+/* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- --------- --------- */
+   &trans    &kp EXCL  &kp TILDE &kp LBRC  &kp RBRC  &kp AMPS    &kp LC(F2) &trans   &trans   &kp LC(F8) &kp PG_UP &trans
+   &trans    &kp HASH  &kp GRAVE &kp LPAR  &kp RPAR  &kp DLLR    &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT &trans    &trans
+   &trans    &kp PRCNT &kp CARET &kp LBKT  &kp RBKT  &kp AT      &kp DEL   &kp END   &kp HOME  &kp INS   &kp PG_DN &trans
+/*                               --------- --------- --------- | --------- --------- ---------                               */
+                                 &trans    &none     &trans      &trans    &trans    &trans
+                        >;
+                };
+                mouse_layer {
+                        bindings = <
+/* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- ---------   --------- */
+   &trans    &trans    &trans    &trans    &trans    &trans      &trans    &trans    &trans    &trans   &kp C_VOL_UP &trans
+   &trans    &trans    &trans    &trans    &trans    &trans      &trans    &trans    &trans    &trans   &trans       &kp C_PLAY_PAUSE
+   &trans    &trans    &trans    &trans    &trans    &trans      &trans    &trans    &trans    &trans   &kp C_VOL_DN &trans
+/*                               --------- --------- --------- | --------- --------- ---------                               */
+                                 &trans    &trans    &trans      &trans    &trans    &trans
+                        >;
+                };
+                number_layer {
+                        bindings = <
+/* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- --------- --------- */
+   &trans    &trans    &trans    &kp E     &trans    &trans      &kp MINUS &kp N7    &kp N8    &kp N9    &kp STAR  &trans
+   &trans    &kp A     &trans    &kp D     &kp F     &trans      &kp PLUS  &kp N4    &kp N5    &kp N6    &kp DOT   &trans
+   &trans    &trans    &trans    &kp C     &trans    &kp B       &kp EQUAL &kp N1    &kp N2    &kp N3    &kp SLASH &trans
+/*                               --------- --------- --------- | --------- --------- ---------                               */
+                                 &trans    &trans    &trans      &trans    &trans    &kp N0
+                        >;
+                };
+        };
+};
