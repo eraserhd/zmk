@@ -114,6 +114,7 @@
             { name ? "zmk-firmware"
             , board
             , shields
+            , config
             }:
           pkgs.stdenv.mkDerivation {
             inherit name;
@@ -140,7 +141,7 @@
             buildPhase = ''
               export ZEPHYR_BASE=$PWD/zephyr
               cd app
-              ${concatStringsSep "\n" (map (shield: "west -vvv build -p -d build/${shield} -b ${board} -- -DSHIELD=${shield} -DZMK_CONFIG=$PWD/../config") shields)}
+              ${concatStringsSep "\n" (map (shield: "west -vvv build -p -d build/${shield} -b ${board} -- -DSHIELD=${shield} -DZMK_CONFIG=${config}") shields)}
               cd ..
             '';
 
@@ -157,6 +158,7 @@
           name = "corne-firmware";
           board = "nice_nano";
           shields = [ "corne_left" "corne_right" ];
+          config = ./config;
         };
       });
 }
