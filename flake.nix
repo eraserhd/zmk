@@ -147,8 +147,7 @@
 
             installPhase = ''
               mkdir -p $out
-              cp app/build/corne_left/zephyr/zmk.uf2 $out/corne_left.uf2
-              cp app/build/corne_right/zephyr/zmk.uf2 $out/corne_right.uf2
+              ${concatStringsSep "\n" (map (shield: "cp app/build/${shield}/zephyr/zmk.uf2 $out/${shield}.uf2") shields)}
             '';
           };
 	};
