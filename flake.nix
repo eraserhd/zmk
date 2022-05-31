@@ -102,8 +102,6 @@
         devShells.default = pkgs.mkShell {
           inherit nativeBuildInputs;
 
-          CCACHE_DIR = "/nix/var/cache/ccache";
-          CCACHE_UMASK = "007";
           ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
           GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
 
@@ -112,15 +110,14 @@
           '';
         };
 
-        packages.default = pkgs.ccacheStdenv.mkDerivation {
+        packages.default = pkgs.stdenv.mkDerivation {
           name = "crkbd-firmware";
 
           src = allSource;
 
           inherit nativeBuildInputs;
 
-          CCACHE_DIR = "/nix/var/cache/ccache";
-          CCACHE_UMASK = "007";
+          CCACHE_DISABLE = 1;
           ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
           GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
 
