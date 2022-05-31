@@ -15,6 +15,26 @@
         "type": "github"
       }
     },
+    "nix-zmk": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1654007052,
+        "narHash": "sha256-iAJQStnJgkML0jchR6Rhx4lx2YzGlHw+gCwcl0Da1c0=",
+        "owner": "eraserhd",
+        "repo": "nix-zmk",
+        "rev": "b9c5a9d80b55594262f2e3c01ea52bc8649321fa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "eraserhd",
+        "repo": "nix-zmk",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1653704018,
@@ -32,6 +52,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "nix-zmk": "nix-zmk",
         "nixpkgs": "nixpkgs"
       }
     }

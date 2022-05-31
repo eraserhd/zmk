@@ -1,8 +1,10 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
+    nix-zmk.url = "github:eraserhd/nix-zmk";
+    nix-zmk.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { self, flake-utils, nixpkgs }:
+  outputs = { self, flake-utils, nixpkgs, nix-zmk }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
