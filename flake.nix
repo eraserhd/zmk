@@ -76,10 +76,10 @@
 
         linkCommands = concatStringsSep "\n" (map (name: linkCommand name modules.${name}) (attrNames modules));
 
-        allSource = pkgs.stdenv.mkDerivation {
+        allSource = zmk: pkgs.stdenv.mkDerivation {
           name = "zmk-firmware-source";
 
-          src = ./.;
+          src = zmk;
 
           buildPhase = ''
             mkdir -p .west
@@ -98,7 +98,7 @@
           '';
         };
 
-	lib = {
+	lib = rec {
           devShell = {}: pkgs.mkShell {
             inherit nativeBuildInputs;
 
@@ -110,16 +110,24 @@
             '';
           };
 
+          defaultZmk = pkgs.fetchFromGitHub {
+            owner = "zmkfirmware";
+            repo = "zmk";
+            rev = "41dc774848dace9b4bcfa59691c81a229dd416e1";
+            sha256 = "/BIVgqOfavHVIIVGLfg7rOx6T8GPhEjOsokvq1uw6sw=";
+          };
+
           firmwarePackage =
             { name ? "zmk-firmware"
             , board
             , shields
-            , config
-            }:
+            , config ? ./config
+            , zmk ? defaultZmk
+           }:
           pkgs.stdenv.mkDerivation {
             inherit name;
 
-            src = allSource;
+            src = allSource zmk;
 
             inherit nativeBuildInputs;
 
@@ -159,6 +167,7 @@
           board = "nice_nano";
           shields = [ "corne_left" "corne_right" ];
           config = ./config;
+          zmk = ./.;
         };
       });
 }
