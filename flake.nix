@@ -36,7 +36,6 @@
           "modules/lib/nanopb" = fetchFromZephyr { repo = "nanopb"; rev = "d148bd26718e4c10414f07a7eb1bd24c62e56c5d"; sha256 = "6r7aJX4xx4iU1t+KEqqqM7d6NCkS2ul/DKNul5x2zL8="; };
           "modules/bsim_hw_models/nrf_hw_models" = fetchFromZephyr { repo = "nrf_hw_models"; rev = "b8cea37dbdc8fc58cc14b4e19fa850877a9da520"; sha256 = "IqToh5ljBabj2+P69CyYsVsYooH1xV4KbNPNXrWJNG0="; };
           "modules/lib/open-amp" = fetchFromZephyr { repo = "open-amp"; rev = "cfd050ff38a9d028dc211690b2ec35971128e45e"; sha256 = "q9LUmC/kCBcsJGb2ayoX9e1KLdkakt03EqZKm1QOxJI="; };
-#      repo-path: tflite-micro
           "modules/lib/tflite-micro" = fetchFromZephyr { repo = "tflite-micro"; rev = "9156d050927012da87079064db59d07f03b8baf6"; sha256 = "Aa5mFsGFc3c7F7GleL0QfB5XBl1ihYGsGIDCnEPBP98="; };
           "modules/lib/tinycbor" = fetchFromZephyr { repo = "tinycbor"; rev = "40daca97b478989884bffb5226e9ab73ca54b8c4"; sha256 = "MbJbXqX+CJMQ0ctGDDGG4nOvX6IM6CB1srE452SOQAs="; };
           "modules/crypto/tinycrypt" = fetchFromZephyr { repo = "tinycrypt"; rev = "3e9a49d2672ec01435ffbf0d788db6d95ef28de0"; sha256 = "5gtZbZNx+D/EUkyYk7rPtcxBZaNs4IFGTP/7IXzCoqU="; };
@@ -45,6 +44,32 @@
           "modules/tee/tf-m/psa-arch-tests" = fetchFromZephyr { repo = "psa-arch-tests"; rev = "0aab24602cbef30f6422e7ef1066a8473073e586"; sha256 = "vyJVQhPuOi5tEpeKL1ITGGwZnhhtXfGH4xniNV3Ihnw="; };
           "modules/lib/zscilib" = fetchFromZephyr { repo = "zscilib"; rev = "12bfe3f0a9fcbfe3edab7eabc9678b6c62875d34"; sha256 = "5GR2l7iQ1TLSi6wwEbfxgO6E8R1MEySL1tU+fBpPS6w="; };
         };
+
+        nativeBuildInputs = with pkgs; [
+          git
+          gcc-arm-embedded
+          cmake
+          bzip2
+          ccache
+          dtc
+          dfu-util
+          libtool
+          ninja
+          gperf
+          xz
+          (python3.withPackages (p: with p; [
+            pyelftools
+            pyyaml
+            pykwalify
+            canopen
+            packaging
+            progress
+            psutil
+            intelhex
+            west
+          ]))
+          qemu
+        ];
 
         # ln -s might actually work
         linkCommand = path: pkg: "mkdir -p $(dirname ./${path}); cp -r ${pkg} ./${path}";
@@ -74,37 +99,11 @@
         };
 
       in {
-        # FIXME: kill this
-        packages.source = allSource;
-
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [
-            git
-            gcc-arm-embedded
-            cmake
-            bzip2
-            ccache
-            dtc
-            dfu-util
-            libtool
-            ninja
-            gperf
-            xz
-            (python3.withPackages (p: with p; [
-              pyelftools
-              pyyaml
-              pykwalify
-              canopen
-              packaging
-              progress
-              psutil
-              #pylink-square
-              intelhex
-              west
-            ]))
-            qemu
-          ];
+          inherit nativeBuildInputs;
 
+          CCACHE_DIR = "/nix/var/cache/ccache";
+          CCACHE_UMASK = "007";
           ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
           GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
 
@@ -118,31 +117,7 @@
 
           src = allSource;
 
-          nativeBuildInputs = with pkgs; [
-            git
-            gcc-arm-embedded
-            cmake
-            bzip2
-            dtc
-            dfu-util
-            libtool
-            ninja
-            gperf
-            xz
-            (python3.withPackages (p: with p; [
-              pyelftools
-              pyyaml
-              pykwalify
-              canopen
-              packaging
-              progress
-              psutil
-              #pylink-square
-              intelhex
-              west
-            ]))
-            qemu
-          ];
+          inherit nativeBuildInputs;
 
           CCACHE_DIR = "/nix/var/cache/ccache";
           CCACHE_UMASK = "007";
