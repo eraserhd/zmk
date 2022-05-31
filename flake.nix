@@ -140,8 +140,7 @@
             buildPhase = ''
               export ZEPHYR_BASE=$PWD/zephyr
               cd app
-              west -vvv build -p -d build/corne_left -b ${board} -- -DSHIELD=corne_left -DZMK_CONFIG=$PWD/../config
-              west -vvv build -p -d build/corne_right -b ${board} -- -DSHIELD=corne_right -DZMK_CONFIG=$PWD/../config
+              ${concatStringsSep "\n" (map (shield: "west -vvv build -p -d build/${shield} -b ${board} -- -DSHIELD=${shield} -DZMK_CONFIG=$PWD/../config") shields)}
               cd ..
             '';
 
