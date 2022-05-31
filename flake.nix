@@ -98,53 +98,67 @@
           '';
         };
 
+	lib = {
+          devShell = {}: pkgs.mkShell {
+            inherit nativeBuildInputs;
+
+            ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
+            GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
+
+            shellHook = ''
+              export ZEPHYR_BASE=$PWD/zephyr
+            '';
+          };
+
+          firmwarePackage =
+            { name ? "zmk-firmware"
+            , board
+            , shields
+            }:
+          pkgs.stdenv.mkDerivation {
+            inherit name;
+
+            src = allSource;
+
+            inherit nativeBuildInputs;
+
+            CCACHE_DISABLE = 1;
+            ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
+            GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
+
+            configurePhase = ''
+              # The west commands needs to find .git
+              git -C zephyr init
+              git -C zephyr config user.email 'foo@example.com'
+              git -C zephyr config user.name 'Foo Bar'
+              git -C zephyr add -A
+              git -C zephyr commit -m 'Fake commit'
+              git -C zephyr checkout -b manifest-rev
+              git -C zephyr checkout --detach manifest-rev
+            '';
+
+            buildPhase = ''
+              export ZEPHYR_BASE=$PWD/zephyr
+              cd app
+              west -vvv build -p -d build/corne_left -b ${board} -- -DSHIELD=corne_left -DZMK_CONFIG=$PWD/../config
+              west -vvv build -p -d build/corne_right -b ${board} -- -DSHIELD=corne_right -DZMK_CONFIG=$PWD/../config
+              cd ..
+            '';
+
+            installPhase = ''
+              mkdir -p $out
+              cp app/build/corne_left/zephyr/zmk.uf2 $out/corne_left.uf2
+              cp app/build/corne_right/zephyr/zmk.uf2 $out/corne_right.uf2
+            '';
+          };
+	};
+
       in {
-        devShells.default = pkgs.mkShell {
-          inherit nativeBuildInputs;
-
-          ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
-          GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
-
-          shellHook = ''
-            export ZEPHYR_BASE=$PWD/zephyr
-          '';
-        };
-
-        packages.default = pkgs.stdenv.mkDerivation {
-          name = "crkbd-firmware";
-
-          src = allSource;
-
-          inherit nativeBuildInputs;
-
-          CCACHE_DISABLE = 1;
-          ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
-          GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
-
-          configurePhase = ":";
-
-          buildPhase = ''
-            # The west commands needs to find .git
-            git -C zephyr init
-            git -C zephyr config user.email 'foo@example.com'
-            git -C zephyr config user.name 'Foo Bar'
-            git -C zephyr add -A
-            git -C zephyr commit -m 'Fake commit'
-            git -C zephyr checkout -b manifest-rev
-            git -C zephyr checkout --detach manifest-rev
-
-            export ZEPHYR_BASE=$PWD/zephyr
-            cd app
-            west -vvv build -p -d build/left -b nice_nano -- -DSHIELD=corne_left -DZMK_CONFIG=$PWD/../config
-            west -vvv build -p -d build/right -b nice_nano -- -DSHIELD=corne_right -DZMK_CONFIG=$PWD/../config
-            cd ..
-          '';
-
-          installPhase = ''
-            mkdir -p $out
-            cp app/build/left/zephyr/zmk.uf2 $out/left.uf2
-            cp app/build/right/zephyr/zmk.uf2 $out/right.uf2
-          '';
+        devShells.default = lib.devShell {};
+        packages.default = lib.firmwarePackage {
+          name = "corne-firmware";
+          board = "nice_nano";
+          shields = [ "corne_left" "corne_right" ];
         };
       });
 }
