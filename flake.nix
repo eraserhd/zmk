@@ -170,7 +170,7 @@
               ${concatStringsSep "\n" (map (shield: "cp app/build/${shield}/zephyr/zmk.uf2 $out/${shield}.uf2") shields)}
             '';
           };
-	};
+        };
 
       in {
         devShells.default = lib.devShell {
