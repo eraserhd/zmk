@@ -78,9 +78,9 @@
         ];
 
         # ln -s might actually work
-        linkCommand = path: pkg: "mkdir -p $(dirname ./${path}); cp -r ${pkg} ./${path}";
+        moduleSetupCommand = path: pkg: "mkdir -p $(dirname ./${path}); cp -r ${pkg} ./${path}";
 
-        linkCommands = concatStringsSep "\n" (map (name: linkCommand name modulePackages.${name}) (attrNames modulePackages));
+        moduleSetupCommands = concatStringsSep "\n" (map (name: moduleSetupCommand name modulePackages.${name}) (attrNames modulePackages));
 
 	lib = rec {
           devShell = { nixpkgs, system }:
@@ -138,7 +138,7 @@
                 [zephyr]
                 base = zephyr
                 EOF
-                ${linkCommands}
+                ${moduleSetupCommands}
               '';
               installPhase = ''
                 cp -r . $out
