@@ -77,10 +77,10 @@
           qemu
         ];
 
-        # ln -s might actually work
-        moduleSetupCommand = path: pkg: "mkdir -p $(dirname ./${path}); cp -r ${pkg} ./${path}";
-
-        moduleSetupCommands = concatStringsSep "\n" (map (name: moduleSetupCommand name modulePackages.${name}) (attrNames modulePackages));
+        moduleSetupCommands = let
+          # ln -s might actually work
+          moduleSetupCommand = path: pkg: "mkdir -p $(dirname ./${path}); cp -r ${pkg} ./${path}";
+        in concatStringsSep "\n" (map (name: moduleSetupCommand name modulePackages.${name}) (attrNames modulePackages));
 
 	lib = rec {
           devShell = { nixpkgs, system }:
