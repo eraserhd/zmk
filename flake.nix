@@ -5,7 +5,9 @@
     nix-zmk.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs = { self, flake-utils, nixpkgs, nix-zmk }:
-    flake-utils.lib.eachDefaultSystem (system:
+    let
+
+    in flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -47,7 +49,7 @@
           "modules/lib/zscilib" = fetchFromZephyr { repo = "zscilib"; rev = "12bfe3f0a9fcbfe3edab7eabc9678b6c62875d34"; sha256 = "5GR2l7iQ1TLSi6wwEbfxgO6E8R1MEySL1tU+fBpPS6w="; };
         };
 
-        nativeBuildInputs = with pkgs; [
+        buildInputs = pkgs: with pkgs; [
           git
           gcc-arm-embedded
           cmake
@@ -102,7 +104,7 @@
 
 	lib = rec {
           devShell = {}: pkgs.mkShell {
-            inherit nativeBuildInputs;
+            nativeBuildInputs = buildInputs pkgs;
 
             ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
             GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
@@ -131,12 +133,13 @@
 
             src = allSource zmk;
 
-            inherit nativeBuildInputs;
+            nativeBuildInputs = buildInputs pkgs;
 
             CCACHE_DISABLE = 1;
             ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
             GNUARMEMB_TOOLCHAIN_PATH = pkgs.gcc-arm-embedded;
 
+            # dontUseCmakeConfigure = true;
             configurePhase = ''
               # The west commands needs to find .git
               git -C zephyr init
