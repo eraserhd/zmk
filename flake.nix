@@ -103,7 +103,10 @@
         };
 
 	lib = rec {
-          devShell = {}: pkgs.mkShell {
+          devShell = { nixpkgs, system }:
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+          in pkgs.mkShell {
             nativeBuildInputs = buildInputs pkgs;
 
             ZEPHYR_TOOLCHAIN_VARIANT = "gnuarmemb";
@@ -127,8 +130,12 @@
             , shields
             , config ? ./config
             , zmk ? defaultZmk
+            , nixpkgs
+            , system
            }:
-          pkgs.stdenv.mkDerivation {
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+          in pkgs.stdenv.mkDerivation {
             inherit name;
 
             src = allSource zmk;
@@ -166,8 +173,11 @@
 	};
 
       in {
-        devShells.default = lib.devShell {};
+        devShells.default = lib.devShell {
+          inherit nixpkgs system;
+        };
         packages.default = lib.firmwarePackage {
+          inherit nixpkgs system;
           name = "corne-firmware";
           board = "nice_nano";
           shields = [ "corne_left" "corne_right" ];
