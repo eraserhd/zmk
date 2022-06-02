@@ -45,12 +45,6 @@
           "modules/lib/zscilib" = { repo = "zscilib"; rev = "12bfe3f0a9fcbfe3edab7eabc9678b6c62875d34"; sha256 = "5GR2l7iQ1TLSi6wwEbfxgO6E8R1MEySL1tU+fBpPS6w="; };
         };
 
-        pkgs = nixpkgs.legacyPackages.${system};
-
-        fetchFromZephyr = args: pkgs.fetchFromGitHub ({ owner = "zephyrproject-rtos"; } // args);
-
-        modulePackages = mapAttrs (path: spec: fetchFromZephyr spec) modules;
-
         buildInputs = pkgs: with pkgs; [
           git
           gcc-arm-embedded
@@ -77,7 +71,11 @@
           qemu
         ];
 
-        moduleSetupCommands = let
+        moduleSetupCommands = pkgs: let
+          fetchFromZephyr = args: pkgs.fetchFromGitHub ({ owner = "zephyrproject-rtos"; } // args);
+
+          modulePackages = mapAttrs (path: spec: fetchFromZephyr spec) modules;
+
           # ln -s might actually work
           moduleSetupCommand = path: pkg: "mkdir -p $(dirname ./${path}); cp -r ${pkg} ./${path}";
         in concatStringsSep "\n" (map (name: moduleSetupCommand name modulePackages.${name}) (attrNames modulePackages));
@@ -138,7 +136,7 @@
                 [zephyr]
                 base = zephyr
                 EOF
-                ${moduleSetupCommands}
+                ${moduleSetupCommands pkgs}
               '';
               installPhase = ''
                 cp -r . $out
