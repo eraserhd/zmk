@@ -2,11 +2,11 @@
   "nodes": {
     "flake-utils": {
       "locked": {
-        "lastModified": 1652776076,
-        "narHash": "sha256-gzTw/v1vj4dOVbpBSJX4J0DwUR6LIyXo7/SuuTJp1kM=",
+        "lastModified": 1653893745,
+        "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "04c1b180862888302ddfb2e3ad9eaa63afc60cf8",
+        "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
         "type": "github"
       },
       "original": {
@@ -22,26 +22,23 @@
         ]
       },
       "locked": {
-        "lastModified": 1654007052,
-        "narHash": "sha256-iAJQStnJgkML0jchR6Rhx4lx2YzGlHw+gCwcl0Da1c0=",
-        "owner": "eraserhd",
-        "repo": "nix-zmk",
-        "rev": "b9c5a9d80b55594262f2e3c01ea52bc8649321fa",
-        "type": "github"
+        "lastModified": 1654007815,
+        "narHash": "sha256-Zvrd6ksi0UDFB/+k2FLwjBIcK2E4BvdCtpela1L9B+g=",
+        "type": "git",
+        "url": "file:///home/jfelice/src/nix-zmk"
       },
       "original": {
-        "owner": "eraserhd",
-        "repo": "nix-zmk",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/jfelice/src/nix-zmk"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1653704018,
-        "narHash": "sha256-3kQ96fOzxcLDE1WyimGrwf7buN0pvnveGgijzG1uNf8=",
+        "lastModified": 1654007547,
+        "narHash": "sha256-G812EeXZeGeGjkAvbTleGwcKFCGxdLOQb9aViOWASPc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cce0667703fce3a1162dd252cf0864fdf83466ab",
+        "rev": "5643714dea562f0161529ab23058562afeff46d0",
         "type": "github"
       },
       "original": {
