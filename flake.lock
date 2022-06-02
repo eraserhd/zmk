@@ -22,14 +22,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1654007815,
-        "narHash": "sha256-Zvrd6ksi0UDFB/+k2FLwjBIcK2E4BvdCtpela1L9B+g=",
-        "type": "git",
-        "url": "file:///home/jfelice/src/nix-zmk"
+        "lastModified": 1654157303,
+        "narHash": "sha256-CK+AP6Nu3Pwv8jYGJT4tR2It6dgRF18welEKxidQO5U=",
+        "owner": "eraserhd",
+        "repo": "nix-zmk",
+        "rev": "960c58d5b0625ff4e82ddedd9c230875418a0914",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/jfelice/src/nix-zmk"
+        "owner": "eraserhd",
+        "repo": "nix-zmk",
+        "type": "github"
       }
     },
     "nixpkgs": {
