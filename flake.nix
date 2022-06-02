@@ -117,7 +117,10 @@
             '';
           };
 
-          defaultZmk = pkgs.fetchFromGitHub {
+          defaultZmk = { nixpkgs, system }:
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+          in pkgs.fetchFromGitHub {
             owner = "zmkfirmware";
             repo = "zmk";
             rev = "41dc774848dace9b4bcfa59691c81a229dd416e1";
@@ -129,16 +132,18 @@
             , board
             , shields
             , config ? ./config
-            , zmk ? defaultZmk
+            , zmk ? null
             , nixpkgs
             , system
            }:
           let
             pkgs = nixpkgs.legacyPackages.${system};
-          in pkgs.stdenv.mkDerivation {
-            inherit name;
 
-            src = allSource zmk;
+            src = allSource (if zmk == null
+                             then defaultZmk { inherit nixpkgs system; }
+                             else zmk);
+          in pkgs.stdenv.mkDerivation {
+            inherit name src;
 
             nativeBuildInputs = buildInputs pkgs;
 
