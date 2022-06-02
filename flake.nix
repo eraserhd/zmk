@@ -80,28 +80,6 @@
 
         linkCommands = concatStringsSep "\n" (map (name: linkCommand name modules.${name}) (attrNames modules));
 
-        allSource = zmk: pkgs.stdenv.mkDerivation {
-          name = "zmk-firmware-source";
-
-          src = zmk;
-
-          buildPhase = ''
-            mkdir -p .west
-            cat >.west/config <<EOF
-            [manifest]
-            path = app
-            file = west.yml
-
-            [zephyr]
-            base = zephyr
-            EOF
-            ${linkCommands}
-          '';
-          installPhase = ''
-            cp -r . $out
-          '';
-        };
-
 	lib = rec {
           devShell = { nixpkgs, system }:
           let
@@ -138,6 +116,28 @@
            }:
           let
             pkgs = nixpkgs.legacyPackages.${system};
+
+            allSource = zmk: pkgs.stdenv.mkDerivation {
+              name = "zmk-firmware-source";
+
+              src = zmk;
+
+              buildPhase = ''
+                mkdir -p .west
+                cat >.west/config <<EOF
+                [manifest]
+                path = app
+                file = west.yml
+
+                [zephyr]
+                base = zephyr
+                EOF
+                ${linkCommands}
+              '';
+              installPhase = ''
+                cp -r . $out
+              '';
+            };
 
             src = allSource (if zmk == null
                              then defaultZmk { inherit nixpkgs system; }
