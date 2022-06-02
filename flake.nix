@@ -117,10 +117,14 @@
           let
             pkgs = nixpkgs.legacyPackages.${system};
 
-            allSource = zmk: pkgs.stdenv.mkDerivation {
+            realZmk = if zmk == null
+                      then defaultZmk { inherit nixpkgs system; }
+                      else zmk;
+
+            src = pkgs.stdenv.mkDerivation {
               name = "zmk-firmware-source";
 
-              src = zmk;
+              src = realZmk;
 
               buildPhase = ''
                 mkdir -p .west
@@ -139,9 +143,6 @@
               '';
             };
 
-            src = allSource (if zmk == null
-                             then defaultZmk { inherit nixpkgs system; }
-                             else zmk);
           in pkgs.stdenv.mkDerivation {
             inherit name src;
 
