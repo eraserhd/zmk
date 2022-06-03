@@ -12,8 +12,29 @@
 };
 
 / {
+        macros {
+                /* MacOS requires the CAPS key to be held for 50ms to activate. */
+                unfucked_caps: unfucked_caps {
+                        label = "CAPS";
+                        compatible = "zmk,behavior-macro";
+                        #binding-cells = <0>;
+                        tap-ms = <55>;
+                        bindings = <&kp CAPS>;
+                };
+        };
 
-#define CAP_Symb  &lt SYMBOL CAPS
+        behaviors {
+                symbol_caps_behavior: symbol_caps_behavior {
+                        compatible = "zmk,behavior-hold-tap";
+                        label = "SYMBOL_CAPS";
+                        #binding-cells = <2>;
+                        flavor = "hold-preferred";
+                        tapping-term-ms = <200>;
+                        bindings = <&mo>, <&unfucked_caps>;
+                };
+        };
+
+#define CAP_Symb  &symbol_caps_behavior SYMBOL &none
 #define _D_Numb_  &lt NUMBER D
 #define _Z_LCtl_  &mt LCTL Z
 #define _X_LAlt_  &mt LALT X
