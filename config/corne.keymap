@@ -8,40 +8,40 @@
 #define NUMBER  3
 
 &mt {
-        flavor = "balanced";
+    flavor = "balanced";
 };
 
 / {
-        macros {
-                /* MacOS requires the CAPS key to be held for 50ms to activate. */
-                unfucked_caps: unfucked_caps {
-                        label = "CAPS";
-                        compatible = "zmk,behavior-macro";
-                        #binding-cells = <0>;
-                        tap-ms = <55>;
-                        bindings = <&kp CAPS>;
-                };
+    macros {
+        /* MacOS requires the CAPS key to be held for 50ms to activate. */
+        unfucked_caps: unfucked_caps {
+            label = "CAPS";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            tap-ms = <55>;
+            bindings = <&kp CAPS>;
         };
+    };
 
-        behaviors {
-                symbol_caps_behavior: symbol_caps_behavior {
-                        compatible = "zmk,behavior-hold-tap";
-                        label = "SYMBOL_CAPS";
-                        #binding-cells = <2>;
-                        flavor = "hold-preferred";
-                        tapping-term-ms = <200>;
-                        bindings = <&mo>, <&unfucked_caps>;
-                };
-                
-                lt_hold: behavior_layer_tap_hold_preferred {
-                        compatible = "zmk,behavior-hold-tap";
-                        label = "LAYER_TAP_HOLD_PREFERRED";
-                        #binding-cells = <2>;
-                        flavor = "hold-preferred";
-                        tapping-term-ms = <200>;
-                        bindings = <&mo>, <&kp>;
-                };
+    behaviors {
+        symbol_caps_behavior: symbol_caps_behavior {
+            compatible = "zmk,behavior-hold-tap";
+            label = "SYMBOL_CAPS";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&unfucked_caps>;
         };
+            
+        lt_hold: behavior_layer_tap_hold_preferred {
+            compatible = "zmk,behavior-hold-tap";
+            label = "LAYER_TAP_HOLD_PREFERRED";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
+        };
+    };
 
 #define CAP_Symb  &symbol_caps_behavior SYMBOL &none
 #define _D_Numb_  &lt NUMBER D
@@ -54,47 +54,47 @@
 #define Bspc_Cmd  &mt RGUI BACKSPACE
 #define _Q_Mouse  &lt MOUSE Q
 
-        keymap {
-                compatible = "zmk,keymap";
-                default_layer {
-                        bindings = <
+    keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+            bindings = <
 /* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- --------- --------- */
    &kp MINUS _Q_Mouse  &kp W     &kp E     &kp R     &kp T       &kp Y     &kp U     &kp I     &kp O     &kp P     &kp BSLH
    CAP_Symb  &kp A     &kp S     _D_Numb_  &kp F     &kp G       &kp H     &kp J     &kp K     &kp L     &kp SEMI  _Qu_Symb
    &kp LSHFT _Z_LCtl_  _X_LAlt_  &kp C     &kp V     &kp B       &kp N     &kp M     &kp COMMA Dot_RAlt  Slsh_Ctl  &kp RSHFT
 /*                               --------- --------- --------- | --------- --------- ---------                               */
                                  &trans    &kp ENTER _Tab_Cmd    Bspc_Cmd  &kp SPACE &kp ESC
-                        >;
-                };
-                symbol_layer {
-                        bindings = <
+                >;
+        };
+        symbol_layer {
+            bindings = <
 /* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- --------- --------- */
    &trans    &kp EXCL  &kp TILDE &kp LBRC  &kp RBRC  &kp AMPS    &kp LC(F2) &trans   &trans   &kp LC(F8) &kp PG_UP &trans
    &trans    &kp HASH  &kp GRAVE &kp LPAR  &kp RPAR  &kp DLLR    &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT &trans    &trans
    &trans    &kp PRCNT &kp CARET &kp LBKT  &kp RBKT  &kp AT      &kp DEL   &kp END   &kp HOME  &kp INS   &kp PG_DN &trans
 /*                               --------- --------- --------- | --------- --------- ---------                               */
                                  &trans    &none     &trans      &trans    &trans    &trans
-                        >;
-                };
-                mouse_layer {
-                        bindings = <
+            >;
+        };
+        mouse_layer {
+            bindings = <
 /* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- ---------   --------- */
    &trans    &trans    &trans    &trans    &trans    &trans      &trans    &trans    &trans    &trans   &kp C_VOL_UP &trans
    &trans    &trans    &trans    &trans    &trans    &trans      &trans    &trans    &trans    &trans   &trans       &kp C_PLAY_PAUSE
    &trans    &trans    &trans    &trans    &trans    &trans      &trans    &trans    &trans    &trans   &kp C_VOL_DN &trans
 /*                               --------- --------- --------- | --------- --------- ---------                               */
                                  &trans    &trans    &trans      &trans    &trans    &trans
-                        >;
-                };
-                number_layer {
-                        bindings = <
+            >;
+        };
+        number_layer {
+            bindings = <
 /* --------- --------- --------- --------- --------- --------- | --------- --------- --------- --------- --------- --------- */
    &trans    &trans    &trans    &kp E     &trans    &trans      &kp MINUS &kp N7    &kp N8    &kp N9    &kp STAR  &trans
    &trans    &kp A     &trans    &kp D     &kp F     &trans      &kp PLUS  &kp N4    &kp N5    &kp N6    &kp DOT   &trans
    &trans    &trans    &trans    &kp C     &trans    &kp B       &kp EQUAL &kp N1    &kp N2    &kp N3    &kp SLASH &trans
 /*                               --------- --------- --------- | --------- --------- ---------                               */
                                  &trans    &trans    &trans      &trans    &trans    &kp N0
-                        >;
-                };
+            >;
         };
+    };
 };
