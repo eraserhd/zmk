@@ -13,12 +13,12 @@
 
 / {
     macros {
-        /* MacOS requires the CAPS key to be held for 50ms to activate. */
+        /* MacOS requires the CAPS key to be held for ??? to activate. */
         unfucked_caps: unfucked_caps {
             label = "CAPS";
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            tap-ms = <55>;
+            tap-ms = <155>;
             bindings = <&kp CAPS>;
         };
     };
