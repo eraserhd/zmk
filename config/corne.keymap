@@ -32,6 +32,15 @@
                         tapping-term-ms = <200>;
                         bindings = <&mo>, <&unfucked_caps>;
                 };
+                
+                lt_hold: behavior_layer_tap_hold_preferred {
+                        compatible = “zmk,behavior-hold-tap”;
+                        label = “LAYER_TAP_HOLD_PREFERRED”;
+                        #binding-cells = <2>;
+                        flavor = “hold-preferred”;
+                        tapping-term-ms = <200>;
+                        bindings = <&mo>, <&kp>;
+                };
         };
 
 #define CAP_Symb  &symbol_caps_behavior SYMBOL &none
@@ -39,7 +48,7 @@
 #define _Z_LCtl_  &mt LCTL Z
 #define _X_LAlt_  &mt LALT X
 #define _Tab_Cmd  &mt LGUI TAB
-#define _Qu_Symb  &lt SYMBOL SINGLE_QUOTE
+#define _Qu_Symb  &lt_hold SYMBOL SINGLE_QUOTE
 #define Dot_RAlt  &mt RALT DOT
 #define Slsh_Ctl  &mt RCTL SLASH
 #define Bspc_Cmd  &mt RGUI BACKSPACE
