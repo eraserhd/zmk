@@ -41,6 +41,16 @@
             tapping-term-ms = <200>;
             bindings = <&mo>, <&kp>;
         };
+
+        mt_quicktap: behavior_mod_tap_quicktap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MOD_TAP_QUICKTAP";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            bindings = <&kp>, <&kp>;
+        };
     };
 
 #define CAP_Symb  &symbol_caps_behavior SYMBOL &none
@@ -51,7 +61,7 @@
 #define _Qu_Symb  &lt_hold SYMBOL SINGLE_QUOTE
 #define Dot_RAlt  &mt RALT DOT
 #define Slsh_Ctl  &mt RCTL SLASH
-#define Bspc_Cmd  &mt RGUI BACKSPACE
+#define Bspc_Cmd  &mt_quicktap RGUI BACKSPACE
 #define _Q_Mouse  &lt MOUSE Q
 
     keymap {
