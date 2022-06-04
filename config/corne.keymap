@@ -34,10 +34,10 @@
                 };
                 
                 lt_hold: behavior_layer_tap_hold_preferred {
-                        compatible = “zmk,behavior-hold-tap”;
-                        label = “LAYER_TAP_HOLD_PREFERRED”;
+                        compatible = "zmk,behavior-hold-tap";
+                        label = "LAYER_TAP_HOLD_PREFERRED";
                         #binding-cells = <2>;
-                        flavor = “hold-preferred”;
+                        flavor = "hold-preferred";
                         tapping-term-ms = <200>;
                         bindings = <&mo>, <&kp>;
                 };
